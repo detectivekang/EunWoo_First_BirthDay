@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>첫 번째 생일을 축복해 주세요</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@200;300;400;500;600&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ivory: #FDFBF7;
+            --soft-gold: #D4AF87;
+            --sage: #8B9D83;
+            --dusty-rose: #C9ADA7;
+            --charcoal: #3E3E3E;
+            --warm-white: #F8F6F3;
+            --bronze: #9D7E54;
+            --light-sage: #B8C5B3;
+        }
+
+        body {
+            font-family: 'Noto Serif KR', serif;
+            background: var(--ivory);
+            color: var(--charcoal);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* 우아한 페이드인 애니메이션 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* 장식적 요소 */
+        .ornament {
+            position: absolute;
+            font-size: 24px;
+            color: var(--soft-gold);
+            opacity: 0.15;
+        }
+
+        .ornament-top-left {
+            top: 50px;
+            left: 50px;
+            transform: rotate(-15deg);
+        }
+
+        .ornament-top-right {
+            top: 80px;
+            right: 60px;
+            transform: rotate(15deg);
+        }
+
+        .ornament-bottom-left {
+            bottom: 100px;
+            left: 40px;
+            transform: rotate(10deg);
+        }
+
+        .ornament-bottom-right {
+            bottom: 80px;
+            right: 50px;
+            transform: rotate(-10deg);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 30px;
+            position: relative;
+        }
+
+        /* 헤더 섹션 */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeIn 1s ease-out;
+            position: relative;
+        }
+
+        .verse {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--bronze);
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .decorative-line {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--soft-gold), transparent);
+            margin: 25px auto;
+        }
+
+        .main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            letter-spacing: 4px;
+            color: var(--sage);
+            font-weight: 500;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 42px;
+            font-weight: 300;
+            color: var(--charcoal);
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-style: italic;
+            color: var(--dusty-rose);
+            font-weight: 400;
+        }
+
+        /* 성경 구절 카드 */
+        .scripture-card {
+            background: linear-gradient(135deg, var(--warm-white) 0%, var(--ivory) 100%);
+            padding: 50px 45px;
+            margin: 60px 0;
+            border: 1px solid rgba(212, 175, 135, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+            position: relative;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .scripture-card::before,
+        .scripture-card::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--soft-gold);
+        }
+
+        .scripture-card::before {
+            top: 20px;
+            left: 20px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .scripture-card::after {
+            bottom: 20px;
+            right: 20px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .quote-mark {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 72px;
+            color: var(--soft-gold);
+            opacity: 0.3;
+            line-height: 0;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .scripture-text {
+            font-size: 22px;
+            line-height: 1.9;
+            color: var(--charcoal);
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .scripture-ref {
+            text-align: center;
+            font-size: 15px;
+            color: var(--bronze);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* 초대 메시지 */
+        .invitation-message {
+            text-align: center;
+            max-width: 650px;
+            margin: 60px auto;
+            font-size: 17px;
+            line-height: 2;
+            color: var(--charcoal);
+            animation: fadeIn 1.4s ease-out;
+        }
+
+        .invitation-message p {
+            margin-bottom: 18px;
+        }
+
+        .emphasis {
+            color: var(--sage);
+            font-weight: 600;
+        }
+
+        /* 아기 정보 섹션 */
+        .baby-section {
+            background: white;
+            padding: 70px 50px;
+            margin: 80px 0;
+            box-shadow: 0 15px 60px rgba(0, 0, 0, 0.08);
+            position: relative;
+            animation: fadeIn 1.6s ease-out;
+        }
+
+        .section-label {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--bronze);
+            text-align: center;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .baby-name-display {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .baby-name-kr {
+            font-size: 64px;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 15px;
+            letter-spacing: 8px;
+        }
+
+        .baby-name-en {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-style: italic;
+            color: var(--dusty-rose);
+            font-weight: 400;
+        }
+
+        .baby-cross {
+            font-size: 28px;
+            color: var(--sage);
+            margin: 30px 0;
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+
+        .baby-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 500px;
+            margin: 40px auto 0;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 25px 20px;
+            background: var(--ivory);
+            border-radius: 2px;
+        }
+
+        .detail-label {
+            font-size: 13px;
+            color: var(--bronze);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            font-size: 18px;
+            color: var(--charcoal);
+            font-weight: 500;
+        }
+
+        /* 사진 섹션 */
+        .photo-gallery {
+            margin: 80px 0;
+            animation: fadeIn 1.8s ease-out;
+        }
+
+        .photo-frame {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 20px 70px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-inner {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, var(--light-sage) 0%, var(--dusty-rose) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder-icon {
+            font-size: 80px;
+            opacity: 0.5;
+        }
+
+        /* 슬라이드쇼 스타일 */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--charcoal);
+            border: none;
+            padding: 15px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .slide-btn:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide-btn.prev {
+            left: 20px;
+        }
+
+        .slide-btn.next {
+            right: 20px;
+        }
+
+        .slide-dots {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .photo-caption {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 15px;
+            color: var(--bronze);
+            letter-spacing: 1px;
+        }
+
+        /* 이벤트 정보 */
+        .event-details {
+            background: var(--warm-white);
+            padding: 60px 50px;
+            margin: 80px 0;
+            border-top: 1px solid rgba(212, 175, 135, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 135, 0.3);
+            animation: fadeIn 2s ease-out;
+        }
+
+        .event-title {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: var(--bronze);
+            text-align: center;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+        }
+
+        .event-grid {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .event-item {
+            display: flex;
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .event-item:last-child {
+            border-bottom: none;
+        }
+
+        .event-icon-wrapper {
+            min-width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-icon {
+            font-size: 24px;
+            opacity: 0.7;
+        }
+
+        .event-info-wrapper {
+            flex: 1;
+        }
+
+        .event-label {
+            font-size: 13px;
+            color: var(--bronze);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .event-value {
+            font-size: 18px;
+            color: var(--charcoal);
+            font-weight: 400;
+        }
+
+        /* 지도 버튼 */
+        .map-section {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(212, 175, 135, 0.2);
+        }
+
+        .map-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .map-btn {
+            padding: 14px 32px;
+            background: white;
+            color: var(--charcoal);
+            text-decoration: none;
+            border: 1px solid var(--soft-gold);
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            font-weight: 500;
+        }
+
+        .map-btn:hover {
+            background: var(--soft-gold);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 135, 0.3);
+        }
+
+        /* 호스트 정보 */
+        .host-section {
+            text-align: center;
+            margin: 70px 0;
+            padding: 50px 30px;
+            background: linear-gradient(135deg, rgba(139, 157, 131, 0.05) 0%, rgba(201, 173, 167, 0.05) 100%);
+            animation: fadeIn 2.2s ease-out;
+        }
+
+        .host-label {
+            font-size: 13px;
+            color: var(--bronze);
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .host-names {
+            font-size: 22px;
+            color: var(--charcoal);
+            margin-bottom: 15px;
+        }
+
+        .host-contact {
+            font-size: 15px;
+            color: var(--bronze);
+            margin-top: 20px;
+        }
+
+        /* 감사 메시지 */
+        .closing-section {
+            text-align: center;
+            margin: 80px 0 60px;
+            animation: fadeIn 2.4s ease-out;
+        }
+
+        .blessing-icon {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: var(--sage);
+        }
+
+        .closing-message {
+            font-size: 17px;
+            line-height: 2;
+            color: var(--charcoal);
+            max-width: 600px;
+            margin: 0 auto 35px;
+        }
+
+        .signature {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-style: italic;
+            color: var(--dusty-rose);
+            margin-top: 40px;
+        }
+
+        .footer-ornament {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--soft-gold), transparent);
+            margin: 50px auto 30px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 50px 20px;
+            }
+
+            .subtitle {
+                font-size: 32px;
+            }
+
+            .scripture-card {
+                padding: 40px 30px;
+            }
+
+            .scripture-text {
+                font-size: 19px;
+            }
+
+            .baby-section,
+            .event-details {
+                padding: 50px 30px;
+            }
+
+            .baby-name-kr {
+                font-size: 48px;
+                letter-spacing: 4px;
+            }
+
+            .baby-name-en {
+                font-size: 26px;
+            }
+
+            .baby-details-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .photo-inner {
+                height: 400px;
+            }
+
+            .event-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .event-icon-wrapper {
+                margin-bottom: 15px;
+            }
+
+            .map-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .map-btn {
+                width: 100%;
+            }
+
+            .slide-btn {
+                padding: 10px 15px;
+                font-size: 20px;
+            }
+
+            .slide-btn.prev {
+                left: 10px;
+            }
+
+            .slide-btn.next {
+                right: 10px;
+            }
+
+            .ornament {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ornament ornament-top-left">✦</div>
+    <div class="ornament ornament-top-right">✦</div>
+    <div class="ornament ornament-bottom-left">✦</div>
+    <div class="ornament ornament-bottom-right">✦</div>
+
+    <div class="container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="verse">Psalm 127:3</div>
+            <div class="decorative-line"></div>
+            <h1 class="main-title">First Birthday Celebration</h1>
+            <h2 class="subtitle">첫 번째 생일</h2>
+            <p class="subtitle-en">A Year of Grace</p>
+        </header>
+
+        <!-- 성경 구절 -->
+        <section class="scripture-card">
+            <span class="quote-mark">"</span>
+            <p class="scripture-text">
+                보라 자식들은 여호와의 기업이요<br>
+                태의 열매는 그의 상급이로다
+            </p>
+            <p class="scripture-ref">시편 127편 3절</p>
+        </section>
+
+        <!-- 초대 메시지 -->
+        <div class="invitation-message">
+            <p>하나님께서 선물로 주신 소중한 생명이</p>
+            <p>은혜 가운데 <span class="emphasis">첫 돌</span>을 맞이하게 되었습니다.</p>
+            <p><br></p>
+            <p>지난 일 년간 베풀어주신</p>
+            <p>주님의 사랑과 보호하심에 감사드리며,</p>
+            <p>이 아이의 첫 번째 생일을</p>
+            <p>여러분과 함께 축하하고자 합니다.</p>
+        </div>
+
+        <!-- 아기 정보 -->
+        <section class="baby-section">
+            <div class="section-label">Our Blessing</div>
+            
+            <div class="baby-name-display">
+                <div class="baby-name-kr">강 은 우</div>
+                <div class="baby-name-en">Kang eun woo</div>
+                <div class="baby-cross">✟</div>
+            </div>
+
+            <div class="baby-details-grid">
+                <div class="detail-item">
+                    <div class="detail-label">Born</div>
+                    <div class="detail-value">2025. 03. 05</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Baptized</div>
+                    <div class="detail-value">2025. ○. ○</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Birth Weight</div>
+                    <div class="detail-value">3.2 kg</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Current</div>
+                    <div class="detail-value">9.5 kg</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 사진 갤러리 섹션 -->
+        <section class="photo-gallery">
+            <div class="photo-frame">
+                <div class="photo-inner">
+                    <div class="slideshow-container">
+                        <!-- 사진들 - 원하는 만큼 추가하세요 -->
+                        <div class="slide active">
+                            <img src="1.jpg" alt="우리 아기">
+                        </div>
+                        <div class="slide">
+                            <img src="2.jpg" alt="우리 아기">
+                        </div>
+                        <div class="slide">
+                            <img src="3.jpg" alt="우리 아기">
+                        </div>
+                        <div class="slide">
+                            <img src="4.jpg" alt="우리 아기">
+                        </div>
+                        
+                        <!-- 이전/다음 버튼 -->
+                        <button class="slide-btn prev" onclick="changeSlide(-1)">❮</button>
+                        <button class="slide-btn next" onclick="changeSlide(1)">❯</button>
+                    </div>
+                    
+                    <!-- 슬라이드 인디케이터 -->
+                    <div class="slide-dots">
+                        <span class="dot active" onclick="currentSlide(1)"></span>
+                        <span class="dot" onclick="currentSlide(2)"></span>
+                        <span class="dot" onclick="currentSlide(3)"></span>
+                        <span class="dot" onclick="currentSlide(4)"></span>
+                    </div>
+                </div>
+            </div>
+            <p class="photo-caption">God's Greatest Gift</p>
+        </section>
+
+        <!-- 이벤트 정보 -->
+        <section class="event-details">
+            <h3 class="event-title">Celebration Details</h3>
+            
+            <div class="event-grid">
+                <div class="event-item">
+                    <div class="event-icon-wrapper">
+                        <span class="event-icon">📅</span>
+                    </div>
+                    <div class="event-info-wrapper">
+                        <div class="event-label">Date</div>
+                        <div class="event-value">2026년 3월 7일 토요일</div>
+                    </div>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-icon-wrapper">
+                        <span class="event-icon">⏰</span>
+                    </div>
+                    <div class="event-info-wrapper">
+                        <div class="event-label">Time</div>
+                        <div class="event-value">오후 4시 00분</div>
+                    </div>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-icon-wrapper">
+                        <span class="event-icon">⛪</span>
+                    </div>
+                    <div class="event-info-wrapper">
+                        <div class="event-label">Venue</div>
+                        <div class="event-value">쿠우쿠우 서산점</div>
+                    </div>
+                </div>
+
+                <div class="event-item">
+                    <div class="event-icon-wrapper">
+                        <span class="event-icon">📍</span>
+                    </div>
+                    <div class="event-info-wrapper">
+                        <div class="event-label">Address</div>
+                        <div class="event-value">충청남도 서산시 안견로242 쿠우쿠우 서산점</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-section">
+                <p class="event-label">오시는 길</p>
+                <div class="map-buttons">
+                    <a href="https://map.kakao.com/link/search/쿠우쿠우 서산점" target="_blank" class="map-btn">KAKAO MAP</a>
+                    <a href="https://map.naver.com/v5/search/쿠우쿠우 서산점" target="_blank" class="map-btn">NAVER MAP</a>
+                    <a href="https://www.google.com/maps/search/쿠우쿠우+서산점+충청남도+서산시+안견로242" target="_blank" class="map-btn">GOOGLE MAPS</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 호스트 정보 -->
+        <section class="host-section">
+            <div class="host-label">Parents</div>
+            <div class="host-names">
+                <strong>아버지</strong> 강새빛 · <strong>어머니</strong> 도유경
+            </div>
+            <div class="host-contact">
+                Tel. 010-8736-8891 / 010-2203-9620
+            </div>
+        </section>
+
+        <!-- 감사 메시지 -->
+        <section class="closing-section">
+            <div class="blessing-icon">✟</div>
+            <div class="closing-message">
+                귀한 시간 내어 자리를 빛내주시고<br>
+                함께 축복해 주시면<br>
+                큰 기쁨이 되겠습니다.<br>
+                <br>
+                주님의 평강이 함께 하시길 기도합니다.
+            </div>
+            <div class="signature">In God's Love</div>
+            <div class="footer-ornament"></div>
+        </section>
+    </div>
+
+    <script>
+        let currentSlideIndex = 1;
+        showSlide(currentSlideIndex);
+
+        function changeSlide(n) {
+            showSlide(currentSlideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlide(currentSlideIndex = n);
+        }
+
+        function showSlide(n) {
+            let slides = document.getElementsByClassName("slide");
+            let dots = document.getElementsByClassName("dot");
+            
+            if (n > slides.length) { currentSlideIndex = 1 }
+            if (n < 1) { currentSlideIndex = slides.length }
+            
+            // 모든 슬라이드 숨기기
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+            }
+            
+            // 모든 dot 비활성화
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.remove("active");
+            }
+            
+            // 현재 슬라이드와 dot 활성화
+            slides[currentSlideIndex - 1].classList.add("active");
+            dots[currentSlideIndex - 1].classList.add("active");
+        }
+
+        // 자동 슬라이드 (5초마다)
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    </script>
+</body>
+</html>
